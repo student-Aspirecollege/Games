@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock paper sessor Game</title>
+    <style>
+        body{
+    background: rgb(121, 119, 119);
+    text-align: center;
+}
+.container{
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+.Game{
+    height: 60vmin;
+    width: 60vmin;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5vmin;
+    
+}
+.box{
+    height: 18vmin;
+    width: 18vmin;
+    border-radius: 12%;
+    border: none;
+    font-size: 5vmin;
+    background: rgba(255, 255, 255, 0.884);
+    color: red;
+    
+}
+.back{
+    font-size: 1.5rem;
+    height: fit-content;
+    width: fit-content;
+    background: #000;
+    color: white;
+    border-radius:20px ;
+    margin: 30px auto 0 auto;
+}
+.new-button{
+    background: #000;
+    font-size: 20px;
+    color: white;
+    border-radius: 20%;
+    height:auto;
+    width: auto;
+}
+.msg{
+    color:red;
+    font-size: 30px;
+}
+.hide{
+    display: none;
+}
+    </style>
+    
+</head>
+<body>
+    <div class="msg-container hide">
+        <p id="msg">Winner</p>
+        <button class="new-button">New-game</button>
+    </div>
+    <main>
+        <h1>Tic Tac Toe</h1>
+        <div class="container"
+        >
+            <div class="Game">
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+                <button class="box"></button>
+
+            </div>
+            
+        </div>
+        <button class="back">Reset button</button>
+
+
+       
+        
+    </main>
+
+    <script>
+        let boxes = document.querySelectorAll(".box");
+let button = document.querySelector(".back");
+let rana = document.querySelector("#msg");
+let newBtn = document.querySelector(".new-button");
+let msgContainer = document.querySelector(".msg-container");
+
+let turno = true;
+
+const winPatterns = [
+    [0,1,2],
+    [0,3,6],
+    [0,4,8],
+    [1,4,7],
+    [2,5,8],
+    [2,4,6],
+    [3,4,5],
+    [6,7,8],
+];
+
+const resetGame = ()  => {
+    turno = true;
+    enableBoxes();
+    msgContainer.classList.add("hide");
+    rana.textContent = ""; // Clear the message
+    boxes.forEach(box => {
+        box.textContent = ""; // Clear box text
+        box.disabled = false; // Enable the box
+    });
+}
+
+boxes.forEach((box) => {
+    box.addEventListener("click",() => {
+        if (box.textContent === "") { // Check if the box is empty
+            if (turno) {
+                box.textContent = "O";
+                turno = false;
+            } else {
+                box.textContent = "X";
+                turno = true;
+            }
+            box.disabled = true; // Disable the box after selection
+            checkWinner();
+        }
+    });
+});
+
+const enableBoxes = () => {
+    boxes.forEach(box => {
+        box.disabled = false;
+    });
+}
+
+const showWinner = (winner) => {
+    rana.textContent = `Congratulations, Winner is ${winner}`;
+    msgContainer.classList.remove("hide");
+    disableBoxes();
+}
+
+const checkWinner = () => {
+    for (let pattern of winPatterns) {
+        let pos1Val = boxes[pattern[0]].textContent;
+        let pos2Val = boxes[pattern[1]].textContent;
+        let pos3Val = boxes[pattern[2]].textContent;
+
+        if (pos1Val && pos1Val === pos2Val && pos2Val === pos3Val) {
+            showWinner(pos1Val);
+            break; // Exit loop if a winner is found
+        }
+    }
+}
+
+newBtn.addEventListener("click", resetGame);
+button.addEventListener("click", resetGame);
+
+    </script>
+    
+</body>
+</html>
